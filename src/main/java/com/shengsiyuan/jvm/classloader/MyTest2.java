@@ -1,7 +1,7 @@
 package com.shengsiyuan.jvm.classloader;
 
 /**
- * @Classname MyTest4
+ * @Classname MyTest2
  * @Description
  * 2、连接
  * （2）准备 为类的静态变量分配内存，并将其初始化为默认值
