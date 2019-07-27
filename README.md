@@ -4,9 +4,9 @@
 ## （一）、什么是类的加载
 类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的**Metaspace**（方法区内），然后在堆区创建一个java.lang.Class对象，用来封装类在方法区内的数据结构。类的加载的最终产品是位于堆区中的Class对象，Class对象封装了类在方法区内的数据结构，并且向Java程序员提供了访问方法区内的数据结构的接口。
 ![jvm.png](https://github.com/yichao0803/jvm_lecture/raw/master/img/jvm.png)
- ![image](https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)
-类加载器并不需要等到某个类被“首次主动使用”时再加载它，**JVM规范**允许类加载器在预料某个类将要被使用时就预先加载它，如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误（LinkageError错误）如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误
-🙌 **注意**：加载.class文件的5种方式:
+ 类加载器并不需要等到某个类被“首次主动使用”时再加载它，**JVM规范**允许类加载器在预料某个类将要被使用时就预先加载它，如果在预先加载的过程中遇到了.class文件缺失或存在错误，类加载器必须在程序首次主动使用该类时才报告错误（LinkageError错误）如果这个类一直没有被程序主动使用，那么类加载器就不会报告错误
+ 
+ 🙌 **注意**：加载.class文件的5种方式:
 
 * 👉 从本地系统中直接加载
 * 👉 通过网络下载.class文件
@@ -15,7 +15,7 @@
 * 👉 将Java源文件动态编译为.class文件
 
 ## （二）、类的生命周期
-![img/calssLive2.png](en-resource://database/6892:0)
+![classLive2.png](https://github.com/yichao0803/jvm_lecture/raw/master/img/classLive2.png)
 
 其中**类加载的过程**包括了**加载、验证、准备、解析、初始化**五个阶段。在这五个阶段中，**加载、验证、准备和初始化**这四个阶段**发生的顺序**是确定的，而解析阶段则不一定，它在某些情况下可以在初始化阶段之后开始，这是为了支持Java语言的运行时绑定（也成为动态绑定或晚期绑定）。另外注意这里的几个阶段是**按顺序开始**，**而不是按顺序进行或完成**，因为这些阶段通常都是互相交叉地混合进行的，通常在一个阶段执行的过程中调用或激活另一个阶段。
 ### 1、加载：
@@ -122,13 +122,17 @@ null
 ```
 从上面的结果可以看出，并没有获取到ExtClassLoader的父Loader，原因是Bootstrap Loader（引导类加载器）是用C语言实现的，找不到一个确定的返回父Loader的方式，于是就返回null。
 这几种类加载器的层次关系如下图所示：
-![image](https://github.com/yichao0803/jvm_lecture/raw/master/img/calssLive2.png)
+![classLoader.png](https://github.com/yichao0803/jvm_lecture/raw/master/img/classLoader.png)
+
 🙌**注意**：这里父类加载器并不是通过继承关系来实现的，而是采用组合实现的。
 站在Java虚拟机的角度来讲，只存在两种不同的类加载器：启动类加载器：它使用C++实现（这里仅限于Hotspot，也就是JDK1.5之后默认的虚拟机，有很多其他的虚拟机是用Java语言实现的），是虚拟机自身的一部分；所有其他的类加载器：这些类加载器都由Java语言实现，独立于虚拟机之外，并且全部继承自抽象类java.lang.ClassLoader，这些类加载器需要由启动类加载器加载到内存中之后才能去加载其他的类。
 
 站在Java开发人员的角度来看，类加载器可以大致划分为以下三类：
+
 **（1）、启动类加载器**：Bootstrap ClassLoader，负责加载存放在JDK\jre\lib(JDK代表JDK的安装目录，下同)下，或被-Xbootclasspath参数指定的路径中的，并且能被虚拟机识别的类库（如rt.jar，所有的java.* 开头的类均被Bootstrap ClassLoader加载）。启动类加载器是**无法被Java程序直接引用**的。
+
 **（2）、扩展类加载器**：Extension ClassLoader，该加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载DK\jre\lib\ext目录中，或者由java.ext.dirs系统变量指定的路径中的所有类库（如javax.* 开头的类），开发者**可以直接使用扩展类**加载器。
+
 **（3）、应用程序类加载器**：Application ClassLoader，该类加载器由sun.misc.Launcher$AppClassLoader来实现，它负责加载用户类路径（ClassPath）所指定的类，开发者可以直接使用该类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中**默认的类加载器**。
 
 应用程序都是由这三种类加载器互相配合进行加载的，如果有必要，我们还可以加入自定义的类加载器。因为JVM自带的ClassLoader只是懂得从本地文件系统加载标准的java class文件，因此如果编写了自己的ClassLoader，便可以做到如下几点：
@@ -143,9 +147,10 @@ null
 * 👉缓存机制，缓存机制将会保证所有加载过的Class都会被缓存，当程序中需要使用某个Class时，类加载器先从缓存区寻找该Class，只有缓存区不存在，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存入缓存区。这就是为什么修改了Class后，必须重启JVM，程序的修改才会生效
 ## （四）、类的加载
 类加载有三种方式：
-1、命令行启动应用时候由JVM初始化加载
-2、通过Class.forName()方法动态加载
-3、通过ClassLoader.loadClass()方法动态加载
+* 1、命令行启动应用时候由JVM初始化加载
+* 2、通过Class.forName()方法动态加载
+* 3、通过ClassLoader.loadClass()方法动态加载
+
 例子：
 ```
 package com.neo.classloader;
@@ -171,10 +176,13 @@ public class Test2 {
 }
 ```
 分别切换加载方式，会有不同的输出结果。
+
 **Class.forName()和ClassLoader.loadClass()区别**
-Class.forName()：将类的.class文件加载到jvm中之外，还会对类进行解释，执行类中的static块；
-ClassLoader.loadClass()：只干一件事情，就是将.class文件加载到jvm中，不会执行static中的内容,只有在newInstance才会去执行static块。
-🙌**注意**
+* Class.forName()：将类的.class文件加载到jvm中之外，还会对类进行解释，执行类中的static块；
+* ClassLoader.loadClass()：只干一件事情，就是将.class文件加载到jvm中，不会执行static中的内容,只有在newInstance才会去执行static块。
+
+🙌 **注意**
+
 Class.forName(name, initialize, loader)带参函数也可控制是否加载static块。并且只有调用了newInstance()方法采用调用构造函数，创建类的对象 。
 
 ## （五）、双亲委派模型
@@ -286,8 +294,8 @@ public class MyClassLoader extends ClassLoader {
 * 3、这类Test 类本身可以被 AppClassLoader 类加载，因此我们不能把 com/paddx/test/classloading/Test.class 放在类路径下。否则，由于双亲委托机制的存在，会直接导致该类由 AppClassLoader 加载，而不会通过我们自定义类加载器来加载。
 
 ## （七）、参考资料
-1、[jvm系列(一):java类的加载机制](https://www.cnblogs.com/ityouknow/p/5603287.html)
-2、[深入Java虚拟机】之四：类加载机制](http://blog.csdn.net/ns_code/article/details/17881581)
-3、[JAVA类加载机制全解析](https://segmentfault.com/a/1190000005608960)
-4、[入研究Java类加载机制](http://zyjustin9.iteye.com/blog/2092131)
-5、[Java 类加载机制详解](http://www.codeceo.com/article/java-class-loader-learn.html)
+* 1、[jvm系列(一):java类的加载机制](https://www.cnblogs.com/ityouknow/p/5603287.html)
+* 2、[深入Java虚拟机】之四：类加载机制](http://blog.csdn.net/ns_code/article/details/17881581)
+* 3、[JAVA类加载机制全解析](https://segmentfault.com/a/1190000005608960)
+* 4、[入研究Java类加载机制](http://zyjustin9.iteye.com/blog/2092131)
+* 5、[Java 类加载机制详解](http://www.codeceo.com/article/java-class-loader-learn.html)
