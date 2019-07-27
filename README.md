@@ -121,7 +121,7 @@ null
 ```
 从上面的结果可以看出，并没有获取到ExtClassLoader的父Loader，原因是Bootstrap Loader（引导类加载器）是用C语言实现的，找不到一个确定的返回父Loader的方式，于是就返回null。
 这几种类加载器的层次关系如下图所示：
-![img/calssLoader.png](en-resource://database/6894:0)
+![image](https://github.com/yichao0803/jvm_lecture/raw/master/img/calssLive2.png)
 🙌**注意**：这里父类加载器并不是通过继承关系来实现的，而是采用组合实现的。
 站在Java虚拟机的角度来讲，只存在两种不同的类加载器：启动类加载器：它使用C++实现（这里仅限于Hotspot，也就是JDK1.5之后默认的虚拟机，有很多其他的虚拟机是用Java语言实现的），是虚拟机自身的一部分；所有其他的类加载器：这些类加载器都由Java语言实现，独立于虚拟机之外，并且全部继承自抽象类java.lang.ClassLoader，这些类加载器需要由启动类加载器加载到内存中之后才能去加载其他的类。
 
