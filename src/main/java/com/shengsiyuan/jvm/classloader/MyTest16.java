@@ -13,12 +13,12 @@ public class MyTest16 extends ClassLoader{
     private  final String fileExtension=".class";
 
     public MyTest16(String classLoaderName){
-        super();
+        super(); // 默认将系统类加载器当做该类加载器的父类加载器
         this.classLoaderName=classLoaderName;
     }
 
     public MyTest16(ClassLoader parent,String classLoaderName){
-        super(parent);
+        super(parent); // 显示指定该类加载器的父类加载器
         this.classLoaderName=classLoaderName;
     }
 
