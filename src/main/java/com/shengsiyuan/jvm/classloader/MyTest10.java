@@ -14,7 +14,7 @@ class Parent2{
     }
 }
 
-class  Child2{
+class  Child2 extends Parent2{
     static int b =4;
     static {
         System.out.println("Child2 static block");
