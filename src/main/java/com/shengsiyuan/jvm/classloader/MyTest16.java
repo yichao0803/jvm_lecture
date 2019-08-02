@@ -35,7 +35,7 @@ public class MyTest16 extends ClassLoader {
     @Override
     public Class<?> findClass(String className) {
         System.out.println("findClass invoked:" + className);
-        System.out.println("class load name:"+this.classLoaderName);
+        System.out.println("class load name:" + this.classLoaderName);
 
         byte[] data = this.loadClassData(className);
         return this.defineClass(className, data, 0, data.length);
@@ -48,7 +48,7 @@ public class MyTest16 extends ClassLoader {
         try {
             name = name.replace(".", File.separator);
 
-            is = new FileInputStream(new File(this.path+name + this.fileExtension));
+            is = new FileInputStream(new File(this.path + name + this.fileExtension));
             baos = new ByteArrayOutputStream();
 
             int ch = 0;
@@ -71,27 +71,79 @@ public class MyTest16 extends ClassLoader {
         return data;
     }
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException, InterruptedException {
+        test3();
+    }
+
+    /*
+    类的卸载
+    -XX:+TraceClassUnloading
+     */
+    public static void test3() throws ClassNotFoundException, IllegalAccessException, InstantiationException, InterruptedException {
+        MyTest16 loader1 = new MyTest16("loader1");
+        loader1.setPath("C:\\Users\\Administrator\\Desktop\\");
+
+        Class<?> clazz = loader1.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
+        System.out.println(clazz);
+        System.out.println("clazz：" + clazz.hashCode());
+        Object object = clazz.newInstance();
+        System.out.println(object);
+        System.out.println();
+
+        loader1=null;
+        clazz=null;
+        object=null;
+
+        System.gc();
+
+        Thread.sleep(100000);
+
+        loader1 = new MyTest16("loader1");
+        loader1.setPath("C:\\Users\\Administrator\\Desktop\\");
+        clazz = loader1.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
+        System.out.println(clazz);
+        System.out.println("clazz:"+clazz.hashCode());
+
+        object = clazz.newInstance();
+        System.out.println(object);
+        System.out.println();
+    }
+
+    /*
+       类的命名空间，与类的双亲委托机制
+     */
+    public static void test2() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         MyTest16 loader1 = new MyTest16("loader1");
         //loader1.setPath("E:\\Git\\yichao0803\\jvm_lecture\\target\\classes");
         loader1.setPath("C:\\Users\\Administrator\\Desktop\\");
 
-        Class<?> clazz=loader1.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
+        Class<?> clazz = loader1.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
         System.out.println(clazz);
-        System.out.println("clazz："+clazz.hashCode());
-        Object object =clazz.newInstance();
+        System.out.println("clazz：" + clazz.hashCode());
+        Object object = clazz.newInstance();
         System.out.println(object);
         System.out.println();
 
-        MyTest16 loader2=new MyTest16("loader2");
+        MyTest16 loader2 = new MyTest16(loader1, "loader2");
         loader2.setPath("C:\\Users\\Administrator\\Desktop\\");
 
-        Class<?> clazz2=loader2.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
+        Class<?> clazz2 = loader2.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
         System.out.println(clazz2);
-        System.out.println("clazz2:"+clazz2.hashCode());
-        Object object2=clazz2.newInstance();
+        System.out.println("clazz2:" + clazz2.hashCode());
+        Object object2 = clazz2.newInstance();
         System.out.println(object2);
         System.out.println();
+
+        MyTest16 loader3 = new MyTest16(loader2, "loader3");
+        loader3.setPath("C:\\Users\\Administrator\\Desktop\\");
+
+        Class<?> clazz3 = loader3.loadClass("com.shengsiyuan.jvm.classloader.MyTest1");
+        System.out.println(clazz3);
+        System.out.println("clazz3:" + clazz3.hashCode());
+        Object object3 = clazz3.newInstance();
+        System.out.println(object3);
+        System.out.println();
+
     }
 
     public static void test(ClassLoader classLoader) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
