@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * @Classname MyTest16
- * @Description TODO
+ * @Description 自定义类加载器
  * @Date 2019/7/31 23:40
  * @Created by Zhangyichao
  */
@@ -27,10 +27,10 @@ public class MyTest16 extends ClassLoader {
         this.classLoaderName = classLoaderName;
     }
 
-    @Override
-    public String toString() {
-        return "[" + this.classLoaderName + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "[" + this.classLoaderName + "]";
+//    }
 
     @Override
     public Class<?> findClass(String className) {
