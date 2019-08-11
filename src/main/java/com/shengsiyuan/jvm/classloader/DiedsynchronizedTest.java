@@ -2,7 +2,7 @@ package com.shengsiyua.jvm.classloader;
 
 /**
  * @Classname DiedsynchronizedTest
- * @Description TODO
+ * @Description DiedsynchronizedTest
  * @Date 2019/8/7 23:44
  * @Created by Zhangyichao
  */
