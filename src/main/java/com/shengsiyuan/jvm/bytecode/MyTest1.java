@@ -20,6 +20,12 @@ package com.shengsiyuan.jvm.bytecode;
  * 型，该字节是个标志位，占据1个字节。JVM在解析常量池时，会根据这个u1类型来获取元素的具体类型。值得注意的是，常量池数组中元素的个数=常量池数-1（其中0暂时
  * 不使用），目的是满足某些常量池索引值的数据在特定情况下需要表达【不引用任何一个常量池】的含义；根本原因在于，索引为0也是一个常量（保留常量），只不过它不位于
  * 常量表中，这个常量就对应null值；所以，常量池的索引从1而非0开始。
+ * 6、在JVM规范中、每个变量/字段都有描述信息，描述信息主要的作用是描述字段的数据类型、方法的参数列表（包括数量、类型与顺序）与返回值。根据描述符规则，基本数据
+ * 类型和代表无返回值的void都用一个大写字符来表示，对象类型则使用字符L家对象的全限定名来表示。为了压缩字节码文件的体积，对于基本数据类型，JVM都只使用一
+ * 个大写字母来表示，如下所示：B - byte, C - char, D - double, F - float, I - int, J - long, S - short, Z - boolean , V - void, L - 对象类型，如Ljava/lang/String;
+ * 7、对于数组类型来说，每一个维度使用一个前置的中括号‘[’来表示，如int[]被记录为[I，String[][] 被记录为[[Ljava/lang/String;
+ * 8、用描述符描述方法时，按照先参数列表，后返回值的顺序来描述。参数列表按照参数的严格顺序放在一组（）之内，如方法：String getRealnameByIdAndNickname(int id,
+ * String name)的描述符为：(I,Ljava/lang/String;) Ljava/lang/String;
  * @Date 2019/8/11 19:59
  * @Created by Zhangyichao
  */
