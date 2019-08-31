@@ -1,4 +1,4 @@
-package com.shengsiyua.jvm.classloader;
+package com.shengsiyuan.jvm.classloader;
 
 /**
  * @Classname DiedsynchronizedTest

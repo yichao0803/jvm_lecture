@@ -22,7 +22,7 @@
       * [（四）、类的加载](#四类的加载)
       * [（五）、双亲委派模型](#五双亲委派模型)
       * [（六）、自定义类加载器](#六自定义类加载器)
-      * [（七）、参考资料](#七参考资料)
+      * [（七）、参考资料及工具](#七参考资料及工具)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -368,10 +368,11 @@ public class MyClassLoader extends ClassLoader {
 * 2、最好不要重写loadClass方法，因为这样容易破坏双亲委托模式。
 * 3、这类Test 类本身可以被 AppClassLoader 类加载，因此我们不能把 com/paddx/test/classloading/Test.class 放在类路径下。否则，由于双亲委托机制的存在，会直接导致该类由 AppClassLoader 加载，而不会通过我们自定义类加载器来加载。
 
-## （七）、参考资料
+## （七）、参考资料及工具
 * 1、[jvm系列(一):java类的加载机制](https://www.cnblogs.com/ityouknow/p/5603287.html)
 * 2、[深入Java虚拟机】之四：类加载机制](http://blog.csdn.net/ns_code/article/details/17881581)
 * 3、[Java类加载机制全解析](https://segmentfault.com/a/1190000005608960)
 * 4、[入研究Java类加载机制](http://zyjustin9.iteye.com/blog/2092131)
 * 5、[Java 类加载机制详解](http://www.codeceo.com/article/java-class-loader-learn.html)
 * 6、[圣思园-深入理解JVM 课程列表](http://www.iprogramming.cn/jvm.html)
+* 7、[查看字节码文件三方工具：jclassLib；提供Idea的插件](https://github.com/ingokegel/jclasslib)
