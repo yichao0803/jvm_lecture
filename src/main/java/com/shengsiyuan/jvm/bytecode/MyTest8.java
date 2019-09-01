@@ -20,4 +20,10 @@ package com.shengsiyuan.jvm.bytecode;
  * @Created by Zhangyichao
  */
 public class MyTest8 {
+
+    public  int myCalculate(){
+        int a=1,b=2,c=3,d=4;
+        int result=(1+2-3)*4;
+        return  result;
+    }
 }
