@@ -2,7 +2,7 @@ package com.shengsiyuan.jvm.concurrent;
 
 /**
  * @Classname VokatileVisibilityTest
- * @Description TODO
+ * @Description VolatileVisibilityTest
  * @Date 2019/9/10 12:42
  * @Created by Zhangyichao
  */
