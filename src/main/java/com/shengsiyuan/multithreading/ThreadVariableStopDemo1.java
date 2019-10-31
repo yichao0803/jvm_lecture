@@ -13,23 +13,23 @@ import org.apache.log4j.Logger;
  *
  * @author by Zhangyichao
  * @date 2019/10/31 13:54
- * @see ThreadVariableStopDemo
+ * @see ThreadVariableStopDemo1
  */
-public class ThreadVariableStopDemo {
+public class ThreadVariableStopDemo1 {
 
     public static void main(String[] args) throws InterruptedException {
-        VariableStopThread thread = new VariableStopThread("");
+        VariableStopThread1 thread = new VariableStopThread1("");
         thread.start();
-        Thread.sleep(10);
+        Thread.sleep(5);
         thread.Stop();
     }
 }
 
-class VariableStopThread extends Thread {
+class VariableStopThread1 extends Thread {
     private boolean interrupt = true;
-    private Logger logger = Logger.getLogger(VariableStopThread.class);
+    private Logger logger = Logger.getLogger(VariableStopThread1.class);
 
-    public VariableStopThread(String name) {
+    public VariableStopThread1(String name) {
         super(name);
     }
 
