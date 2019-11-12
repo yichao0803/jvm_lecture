@@ -1,22 +1,31 @@
-package com.shengsiyuan.jvm.concurrent;
+package com.zyccx.jmm;
 
 /**
- * @Classname VolatileTest
- * @Description  volatile变量自增运算测试
- * @Date 2019/9/19 22:28
- * @Created by Zhangyichao
+ * TODO
+ *
+ * @author by Zhangyichao
+ * @date 2019/11/12 10:47
+ * @see AtomicTest
  */
-public class VolatileTest {
 
-    public static volatile int race = 0;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Atomic变量自增运算测试
+ *
+ * @author zzm
+ */
+public class AtomicTest {
+
+    public static AtomicInteger race = new AtomicInteger(0);
 
     public static void increase() {
-        System.out.println(race++);
+        race.incrementAndGet();
     }
 
     private static final int THREADS_COUNT = 20;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Thread[] threads = new Thread[THREADS_COUNT];
         for (int i = 0; i < THREADS_COUNT; i++) {
             threads[i] = new Thread(new Runnable() {
@@ -30,10 +39,10 @@ public class VolatileTest {
             threads[i].start();
         }
 
-        // 等待所有累加线程都结束
         while (Thread.activeCount() > 1)
             Thread.yield();
 
         System.out.println(race);
     }
 }
+

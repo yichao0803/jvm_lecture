@@ -20,11 +20,28 @@ public class YieldTest implements  Runnable{
     }
 
     public static void main(String[] args)  {
-        Thread thread1=new Thread( new YieldTest(),"thread1");
-        Thread thread2=new Thread( new YieldTest(),"thread2" );
-        thread1.start();
-        thread2.start();
+//        Thread thread1=new Thread( new YieldTest(),"thread1");
+//        Thread thread2=new Thread( new YieldTest(),"thread2" );
+//        thread1.start();
+//        thread2.start();
+
+        B b =new B();
+        b.doSomeThing();
 
     }
+}
 
+class A{
+    protected  void  doSomeThing(){
+        System.out.println("A:doSomeThing");
+    }
+}
+
+class B extends A{
+
+    @Override
+    protected void doSomeThing() {
+        super.doSomeThing();
+        System.out.println("B:doSomeThing()");
+    }
 }

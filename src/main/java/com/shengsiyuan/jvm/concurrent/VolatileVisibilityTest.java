@@ -1,13 +1,16 @@
 package com.shengsiyuan.jvm.concurrent;
 
 /**
- * @Classname VokatileVisibilityTest
+ * @Classname
+ * volatile 只能保证线程可见性
+ * volatile 的第二语义，禁止指令重排序优化
+ *
  * @Description VolatileVisibilityTest
  * @Date 2019/9/10 12:42
  * @Created by Zhangyichao
  */
 public class VolatileVisibilityTest {
-    private static volatile boolean initFlag = false;
+    private static volatile boolean  initFlag = false;
 
     public static void main(String[] args) throws InterruptedException {
         new Thread(new Runnable() {

@@ -1,5 +1,8 @@
 package com.shengsiyuan.multithreading;
 
+import java.util.HashMap;
+import java.util.Hashtable;
+
 /**
  * @Classname YieldTest2
  * @Description YieldTest
@@ -29,5 +32,7 @@ public class YieldTest2 extends Thread {
         YieldTest2 yt2 = new YieldTest2("李四");
         yt1.start();
         yt2.start();
+        // HashMap;
+        //Hashtable
     }
 }
