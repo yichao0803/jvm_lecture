@@ -1,25 +1,20 @@
 package com.zyccx.jmm;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+
 /**
- * TODO
+ * Atomic变量自增运算测试
  *
  * @author by Zhangyichao
  * @date 2019/11/12 10:47
  * @see AtomicTest
  */
-
-import java.util.concurrent.atomic.AtomicInteger;
-
-/**
- * Atomic变量自增运算测试
- *
- * @author zzm
- */
 public class AtomicTest {
 
     public static AtomicInteger race = new AtomicInteger(0);
 
-    public static void increase() {
+    public static void increaseA() {
         race.incrementAndGet();
     }
 
@@ -32,7 +27,7 @@ public class AtomicTest {
                 @Override
                 public void run() {
                     for (int i = 0; i < 10000; i++) {
-                        increase();
+                        increaseA();
                     }
                 }
             });
