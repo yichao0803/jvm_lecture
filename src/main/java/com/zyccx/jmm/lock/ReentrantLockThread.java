@@ -3,7 +3,7 @@ package com.zyccx.jmm.lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * TODO
+ * ReentrantLock 锁
  *
  * @author by Zhangyichao
  * @date 2019/11/13 14:29
